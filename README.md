@@ -40,7 +40,7 @@ La aplicación prioriza la legibilidad y la claridad de los datos deportivos.
 - **Blanco / Grises claros (Apoyo):** Legibilidad y reducción de fatiga visual
 
 ### Tipografía
-Fuente sans-serif para alta legibilidad en móviles y estilo moderno.
+Fuente karla para alta legibilidad en móviles y estilo moderno.
 
 ### Paradigma Material
 
@@ -48,7 +48,6 @@ Fuente sans-serif para alta legibilidad en móviles y estilo moderno.
 - **Web (React):** Diseño inspirado en Material 3 con componentes reutilizables
 
 ### Prototipo
-[AQUÍ DEBES INSERTAR EL ENLACE A TU FIGMA]
 
 ---
 

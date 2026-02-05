@@ -1,0 +1,9 @@
+<resources>
+    <string name="padelscore">PadelScore</string>
+
+    <string name="app_name">PadelScore</string>
+
+    <string name="tournaments">Torneos</string>
+    <string name="favorites">Favoritos</string>
+    <string name="matches">Partidos</string>
+</resources>

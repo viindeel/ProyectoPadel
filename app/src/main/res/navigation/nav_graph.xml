@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/matchesFragment">
+
+    <fragment
+        android:id="@+id/tournamentListFragment"
+        android:name="com.example.padelscore.ui.tournaments.TournamentListFragment"
+        android:label="Tournaments"
+        tools:layout="@layout/fragment_tournament_list" >
+        <action
+            android:id="@+id/action_tournamentListFragment_to_tournamentDetailFragment"
+            app:destination="@id/tournamentDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.padelscore.ui.favorites.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/matchesFragment"
+        android:name="com.example.padelscore.ui.matches.MatchesFragment"
+        android:label="Matches"
+        tools:layout="@layout/fragment_matches" />
+
+    <fragment
+        android:id="@+id/tournamentDetailFragment"
+        android:name="com.example.padelscore.ui.tournaments.TournamentDetailFragment"
+        android:label="Tournament Details"
+        tools:layout="@layout/fragment_tournament_detail" />
+
+</navigation>

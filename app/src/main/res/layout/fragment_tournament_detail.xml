@@ -11,21 +11,21 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/header_footer_color">
+        android:background="@color/verde_encabezado_pie">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.App.TitleLarge"
+            android:textColor="@color/color_sobre_primario"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/header_footer_color"
+        app:cardBackgroundColor="@color/color_superficie_variante"
         android:layout_margin="16dp">
 
         <RelativeLayout
@@ -40,7 +40,7 @@
                 tools:text="Nombre del Torneo"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:layout_alignParentStart="true"
-                android:textColor="@android:color/white"
+                android:textColor="@color/color_sobre_superficie_variante"
                 android:layout_toStartOf="@+id/favorite_icon"/>
 
             <ImageView
@@ -50,7 +50,8 @@
                 android:src="@drawable/ic_star_outline"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/favorites"/>
+                android:contentDescription="@string/favorites"
+                app:tint="@color/color_sobre_superficie_variante"/>
 
             <TextView
                 android:id="@+id/tournament_dates"
@@ -59,7 +60,7 @@
                 android:layout_below="@id/tournament_name"
                 android:layout_marginTop="8dp"
                 tools:text="Fecha: YYYY-MM-DD a YYYY-MM-DD"
-                android:textColor="@android:color/white"
+                android:textColor="@color/color_sobre_superficie_variante"
                 android:textAppearance="?attr/textAppearanceBody2"/>
 
             <TextView
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tournament_dates"
                 android:layout_marginTop="8dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/color_sobre_superficie_variante"
                 tools:text="Otros detalles del torneo aquí."
                 android:textAppearance="?attr/textAppearanceBody2"/>
 

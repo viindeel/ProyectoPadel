@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/md_theme_surfaceVariant">
+    app:cardBackgroundColor="@color/color_superficie_variante">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/color_sobre_superficie_variante"
             tools:text="Nombre del Torneo" />
 
         <TextView
@@ -25,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tournament_name"
             android:layout_marginTop="4dp"
+            android:textColor="@color/color_sobre_superficie_variante"
             android:textAppearance="?attr/textAppearanceBody2"
             tools:text="YYYY-MM-DD" />
 

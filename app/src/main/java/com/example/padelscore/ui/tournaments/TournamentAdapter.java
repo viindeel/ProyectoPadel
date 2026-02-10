@@ -39,6 +39,7 @@ public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.Vi
 
         holder.itemView.setOnClickListener(v -> {
             viewModel.select(tournament);
+            viewModel.loadTournamentDetail(tournament.getId());
             Navigation.findNavController(v).navigate(R.id.action_tournamentListFragment_to_tournamentDetailFragment);
         });
     }

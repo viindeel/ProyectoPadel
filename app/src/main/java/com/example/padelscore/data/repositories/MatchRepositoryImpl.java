@@ -3,8 +3,8 @@ package com.example.padelscore.data.repositories;
 import androidx.annotation.NonNull;
 
 import com.example.padelscore.data.remote.ApiService;
-import com.example.padelscore.model.Tournament;
-import com.example.padelscore.model.TournamentResponse;
+import com.example.padelscore.model.Match;
+import com.example.padelscore.model.MatchResponse;
 
 import java.io.IOException;
 
@@ -17,11 +17,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TournamentRepositoryImpl implements TournamentRepository {
+public class MatchRepositoryImpl implements MatchRepository {
 
     private final ApiService apiService;
 
-    public TournamentRepositoryImpl() {
+    public MatchRepositoryImpl() {
         final String apiKey = "0Gj1PjSTyVn5MDA3YnB6HeL4ELyhAw1V69Gmc0FH82be970c";
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -49,40 +49,22 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     }
 
     @Override
-    public void getTournaments(TournamentsCallback callback) {
-        apiService.getTournaments().enqueue(new Callback<TournamentResponse>() {
+    public void getMatches(long tournamentId, MatchesCallback callback) {
+        apiService.getMatches(tournamentId).enqueue(new Callback<MatchResponse>() {
             @Override
-            public void onResponse(@NonNull Call<TournamentResponse> call, @NonNull Response<TournamentResponse> response) {
+            public void onResponse(@NonNull Call<MatchResponse> call, @NonNull Response<MatchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(response.body().getTournaments());
+                    callback.onResponse(response.body().getMatches());
                 } else {
-                    callback.onFailure(new IOException("Error en la API: " + response.code()));
+                    callback.onFailure(new IOException("Error al obtener partidos: " + response.code()));
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<TournamentResponse> call, @NonNull Throwable t) {
-                callback.onFailure(t);
-            }
-        });
-    }
-
-    @Override
-    public void getTournamentDetail(long id, TournamentDetailCallback callback) {
-        apiService.getTournamentDetail(id).enqueue(new Callback<Tournament>() {
-            @Override
-            public void onResponse(@NonNull Call<Tournament> call, @NonNull Response<Tournament> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(response.body());
-                } else {
-                    callback.onFailure(new IOException("Error al obtener detalle del torneo: " + response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Tournament> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<MatchResponse> call, @NonNull Throwable t) {
                 callback.onFailure(t);
             }
         });
     }
 }
+

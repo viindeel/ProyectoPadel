@@ -16,6 +16,18 @@ public class Tournament {
     @SerializedName("start_date")
     private String fecha;
 
+    @SerializedName("end_date")
+    private String fechaFin;
+
+    @SerializedName("category")
+    private String categoria;
+
+    @SerializedName("surface")
+    private String superficie;
+
+    @SerializedName("level")
+    private String nivel;
+
     private boolean isFavorite = false;
 
     public Tournament(long id, String nombre, String ubicacion, String fecha) {
@@ -24,7 +36,6 @@ public class Tournament {
         this.ubicacion = ubicacion;
         this.fecha = fecha;
     }
-
 
     public long getId() {
         return id;
@@ -56,6 +67,38 @@ public class Tournament {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getSuperficie() {
+        return superficie;
+    }
+
+    public void setSuperficie(String superficie) {
+        this.superficie = superficie;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 
     public boolean isFavorite() {

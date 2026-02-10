@@ -1,18 +1,32 @@
 package com.example.padelscore.model;
 
-import com.example.padelscore.data.model.Player;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Match {
+    @SerializedName("id")
     private long id;
-    private List<Player> players;
-    private String result;
 
-    public Match(long id, List<Player> players, String result) {
+    @SerializedName("tournament_id")
+    private long tournamentId;
+
+    @SerializedName("date")
+    private String fecha;
+
+    @SerializedName("status")
+    private String estado;
+
+    @SerializedName("players")
+    private List<String> jugadores;
+
+    @SerializedName("result")
+    private String resultado;
+
+    public Match(long id, List<String> players, String result) {
         this.id = id;
-        this.players = players;
-        this.result = result;
+        this.jugadores = players;
+        this.resultado = result;
     }
 
     public long getId() {
@@ -23,19 +37,43 @@ public class Match {
         this.id = id;
     }
 
-    public List<Player> getPlayers() {
-        return players;
+    public long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
+    public void setTournamentId(long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
-    public String getResult() {
-        return result;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public List<String> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<String> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public String getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
     }
 }

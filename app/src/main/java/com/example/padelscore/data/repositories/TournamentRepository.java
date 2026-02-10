@@ -11,5 +11,11 @@ public interface TournamentRepository {
         void onFailure(Throwable t);
     }
 
+    interface TournamentDetailCallback {
+        void onResponse(Tournament tournament);
+        void onFailure(Throwable t);
+    }
+
     void getTournaments(TournamentsCallback callback);
+    void getTournamentDetail(long id, TournamentDetailCallback callback);
 }

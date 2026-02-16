@@ -1,70 +1,160 @@
 package com.example.padelscore.data.repositories;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.padelscore.data.remote.ApiService;
+import com.example.padelscore.data.remote.RetrofitClient;
 import com.example.padelscore.model.Match;
-import com.example.padelscore.model.MatchResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MatchRepositoryImpl implements MatchRepository {
 
     private final ApiService apiService;
+    private static final String TAG = "MatchRepository";
 
     public MatchRepositoryImpl() {
-        final String apiKey = "0Gj1PjSTyVn5MDA3YnB6HeL4ELyhAw1V69Gmc0FH82be970c";
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @NonNull
-                    @Override
-                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
-                        Request original = chain.request();
-                        Request request = original.newBuilder()
-                                .header("Authorization", "Bearer " + apiKey)
-                                .method(original.method(), original.body())
-                                .build();
-                        return chain.proceed(request);
-                    }
-                })
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://padelapi.org/api/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        this.apiService = retrofit.create(ApiService.class);
+        // Usar el Singleton de RetrofitClient con el backend Django
+        this.apiService = RetrofitClient.getInstance().getApiService();
     }
 
     @Override
-    public void getMatches(long tournamentId, MatchesCallback callback) {
-        apiService.getMatches(tournamentId).enqueue(new Callback<MatchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<MatchResponse> call, @NonNull Response<MatchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(response.body().getMatches());
-                } else {
-                    callback.onFailure(new IOException("Error al obtener partidos: " + response.code()));
-                }
-            }
+    public void getMatches(String tournamentId, MatchesCallback callback) {
+        Log.d(TAG, "Solicitando partidos para torneo: " + tournamentId);
 
-            @Override
-            public void onFailure(@NonNull Call<MatchResponse> call, @NonNull Throwable t) {
-                callback.onFailure(t);
-            }
-        });
+        apiService.getMatches(tournamentId)
+                .enqueue(new Callback<List<Match>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Match>> call,
+                                           @NonNull Response<List<Match>> response) {
+                        Log.d(TAG, "Respuesta API recibida. Código: " + response.code());
+                        Log.d(TAG, "URL completa: " + call.request().url());
+
+                        try {
+                            if (response.isSuccessful()) {
+                                List<Match> matches = response.body();
+                                if (matches != null) {
+                                    Log.d(TAG, "Partidos obtenidos: " + matches.size());
+                                    callback.onResponse(matches);
+                                } else {
+                                    Log.e(TAG, "Body es null");
+                                    callback.onResponse(new ArrayList<>());
+                                }
+                            } else {
+                                String errorBody = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "sin cuerpo";
+                                Log.e(TAG, "Error en la respuesta: " + response.code() + " - " + errorBody);
+                                callback.onFailure(new IOException("Error en la API: " + response.code()));
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error procesando respuesta", e);
+                            callback.onFailure(new IOException("Error procesando la respuesta"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "Error en API de tipo: " + t.getClass().getName());
+                        Log.e(TAG, "Mensaje de error: " + t.getMessage(), t);
+                        callback.onFailure(t);
+                    }
+                });
+    }
+
+    @Override
+    public void getMatchesByDate(String date, MatchesCallback callback) {
+        Log.d(TAG, "Solicitando partidos por fecha: " + date);
+
+        apiService.getMatchesByDate(date)
+                .enqueue(new Callback<List<Match>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Match>> call,
+                                           @NonNull Response<List<Match>> response) {
+                        Log.d(TAG, "Respuesta API recibida. Código: " + response.code());
+                        Log.d(TAG, "URL completa: " + call.request().url());
+
+                        try {
+                            if (response.isSuccessful()) {
+                                List<Match> matches = response.body();
+                                if (matches != null) {
+                                    Log.d(TAG, "Partidos obtenidos: " + matches.size());
+                                    callback.onResponse(matches);
+                                } else {
+                                    Log.e(TAG, "Body es null");
+                                    callback.onResponse(new ArrayList<>());
+                                }
+                            } else {
+                                String errorBody = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "sin cuerpo";
+                                Log.e(TAG, "Error en la respuesta: " + response.code() + " - " + errorBody);
+                                callback.onFailure(new IOException("Error en la API: " + response.code()));
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error procesando respuesta", e);
+                            callback.onFailure(new IOException("Error procesando la respuesta"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "Error en API de tipo: " + t.getClass().getName());
+                        Log.e(TAG, "Mensaje de error: " + t.getMessage(), t);
+                        callback.onFailure(t);
+                    }
+                });
+    }
+
+    @Override
+    public void getFipMatchesByDate(String date, MatchesCallback callback) {
+        Log.d(TAG, "Solicitando partidos FIP por fecha: " + date);
+
+        apiService.getFipMatchesByDate(date)
+                .enqueue(new Callback<List<Match>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Match>> call,
+                                           @NonNull Response<List<Match>> response) {
+                        Log.d(TAG, "Respuesta API recibida. Código: " + response.code());
+                        Log.d(TAG, "URL completa: " + call.request().url());
+
+                        try {
+                            if (response.isSuccessful()) {
+                                List<Match> matches = response.body();
+                                if (matches != null) {
+                                    Log.d(TAG, "Partidos obtenidos: " + matches.size());
+                                    callback.onResponse(matches);
+                                } else {
+                                    Log.e(TAG, "Body es null");
+                                    callback.onResponse(new ArrayList<>());
+                                }
+                            } else {
+                                String errorBody = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "sin cuerpo";
+                                Log.e(TAG, "Error en la respuesta: " + response.code() + " - " + errorBody);
+                                callback.onFailure(new IOException("Error en la API: " + response.code()));
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error procesando respuesta", e);
+                            callback.onFailure(new IOException("Error procesando la respuesta"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Match>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "Error en API de tipo: " + t.getClass().getName());
+                        Log.e(TAG, "Mensaje de error: " + t.getMessage(), t);
+                        callback.onFailure(t);
+                    }
+                });
     }
 }
 

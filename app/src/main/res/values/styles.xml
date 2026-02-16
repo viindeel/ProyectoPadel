@@ -4,4 +4,10 @@
         <item name="cardCornerRadius">12dp</item>
         <item name="cardElevation">2dp</item>
     </style>
+
+    <style name="MenuItemTextStyle" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/karla</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

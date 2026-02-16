@@ -12,6 +12,10 @@ import com.example.padelscore.model.Match;
 import com.example.padelscore.model.Tournament;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class TournamentViewModel extends ViewModel {
@@ -36,6 +40,7 @@ public class TournamentViewModel extends ViewModel {
     public LiveData<Tournament> getSelected() {
         return selected;
     }
+
 
     public LiveData<List<Tournament>> getFavorites() {
         return new MutableLiveData<List<Tournament>>() {
@@ -109,7 +114,7 @@ public class TournamentViewModel extends ViewModel {
         });
     }
 
-    public void loadTournamentDetail(long id) {
+    public void loadTournamentDetail(String id) {
         isLoading.setValue(true);
         repository.getTournamentDetail(id, new TournamentRepository.TournamentDetailCallback() {
             @Override
@@ -128,7 +133,7 @@ public class TournamentViewModel extends ViewModel {
         });
     }
 
-    public void loadMatches(long tournamentId) {
+    public void loadMatches(String tournamentId) {
         isLoading.setValue(true);
         matchRepository.getMatches(tournamentId, new MatchRepository.MatchesCallback() {
             @Override
@@ -147,7 +152,76 @@ public class TournamentViewModel extends ViewModel {
         });
     }
 
-    public void refreshMatches(long tournamentId) {
+    public void refreshMatches(String tournamentId) {
         loadMatches(tournamentId);
+    }
+
+    public void loadMatchesByDate(String date) {
+        isLoading.setValue(true);
+        matchRepository.getMatchesByDate(date, new MatchRepository.MatchesCallback() {
+            @Override
+            public void onResponse(List<Match> matchList) {
+                matches.postValue(matchList);
+                error.postValue(null);
+                isLoading.postValue(false);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                error.postValue("Error al cargar partidos de hoy: " + t.getMessage());
+                isLoading.postValue(false);
+            }
+        });
+    }
+
+    public void loadMatchesByDate(String date, Set<String> favoriteIds) {
+        isLoading.setValue(true);
+        Set<String> favorites = favoriteIds != null ? favoriteIds : new HashSet<>();
+        List<Match> combined = new ArrayList<>();
+        AtomicInteger pending = new AtomicInteger(2);
+
+        MatchRepository.MatchesCallback callback = new MatchRepository.MatchesCallback() {
+            @Override
+            public void onResponse(List<Match> matchList) {
+                if (matchList != null) {
+                    combined.addAll(matchList);
+                }
+                if (pending.decrementAndGet() == 0) {
+                    matches.postValue(sortFavoritesFirst(combined, favorites));
+                    error.postValue(null);
+                    isLoading.postValue(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (pending.decrementAndGet() == 0) {
+                    matches.postValue(sortFavoritesFirst(combined, favorites));
+                    error.postValue("Error al cargar partidos de hoy: " + t.getMessage());
+                    isLoading.postValue(false);
+                }
+            }
+        };
+
+        matchRepository.getMatchesByDate(date, callback);
+        matchRepository.getFipMatchesByDate(date, callback);
+    }
+
+    private List<Match> sortFavoritesFirst(List<Match> matches, Set<String> favorites) {
+        if (favorites == null || favorites.isEmpty()) {
+            return matches;
+        }
+        List<Match> favoritesFirst = new ArrayList<>();
+        List<Match> others = new ArrayList<>();
+        for (Match match : matches) {
+            String tournamentId = match.getTournamentId();
+            if (tournamentId != null && favorites.contains(tournamentId)) {
+                favoritesFirst.add(match);
+            } else {
+                others.add(match);
+            }
+        }
+        favoritesFirst.addAll(others);
+        return favoritesFirst;
     }
 }

@@ -13,4 +13,9 @@
     <color name="color_contorno">#3D5344</color>
     <color name="verde_oscuro">#1B5E20</color>
     <color name="verde_encabezado_pie">#1F6F43</color>
+    <color name="status_live">#2E7D32</color>
+    <color name="status_finished">#546E7A</color>
+    <color name="status_scheduled">#6D4C41</color>
+    <color name="status_postponed">#F9A825</color>
+    <color name="status_cancelled">#C62828</color>
 </resources>

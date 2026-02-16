@@ -1,86 +1,111 @@
 package com.example.padelscore.data.repositories;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.padelscore.data.remote.ApiService;
+import com.example.padelscore.data.remote.RetrofitClient;
 import com.example.padelscore.model.Tournament;
-import com.example.padelscore.model.TournamentResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TournamentRepositoryImpl implements TournamentRepository {
 
     private final ApiService apiService;
+    private static final String TAG = "TournamentRepository";
+    private static final int DEFAULT_YEAR = 2026;
+    private List<Tournament> cachedTournaments = new ArrayList<>();
 
     public TournamentRepositoryImpl() {
-        final String apiKey = "0Gj1PjSTyVn5MDA3YnB6HeL4ELyhAw1V69Gmc0FH82be970c";
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @NonNull
-                    @Override
-                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
-                        Request original = chain.request();
-                        Request request = original.newBuilder()
-                                .header("Authorization", "Bearer " + apiKey)
-                                .method(original.method(), original.body())
-                                .build();
-                        return chain.proceed(request);
-                    }
-                })
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://padelapi.org/api/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        this.apiService = retrofit.create(ApiService.class);
+        // Usar el Singleton de RetrofitClient con el backend Django
+        this.apiService = RetrofitClient.getInstance().getApiService();
     }
 
     @Override
     public void getTournaments(TournamentsCallback callback) {
-        apiService.getTournaments().enqueue(new Callback<TournamentResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<TournamentResponse> call, @NonNull Response<TournamentResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(response.body().getTournaments());
-                } else {
-                    callback.onFailure(new IOException("Error en la API: " + response.code()));
-                }
-            }
+        Log.d(TAG, "Solicitando torneos de la API");
 
-            @Override
-            public void onFailure(@NonNull Call<TournamentResponse> call, @NonNull Throwable t) {
-                callback.onFailure(t);
-            }
-        });
+        String afterDate = DEFAULT_YEAR + "-01-01";
+        String beforeDate = DEFAULT_YEAR + "-12-31";
+
+        apiService.getTournaments(DEFAULT_YEAR, afterDate, beforeDate)
+                .enqueue(new Callback<List<Tournament>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Tournament>> call,
+                            @NonNull Response<List<Tournament>> response) {
+                        Log.d(TAG, "Respuesta recibida. Código: " + response.code());
+                        Log.d(TAG, "URL: " + call.request().url());
+
+                        try {
+                            if (response.isSuccessful()) {
+                                List<Tournament> tournaments = response.body();
+                                if (tournaments != null && !tournaments.isEmpty()) {
+                                    cachedTournaments = new ArrayList<>(tournaments);
+                                    callback.onResponse(tournaments);
+                                } else {
+                                    Log.w(TAG, "Lista de torneos vacía");
+                                    callback.onFailure(new IOException("La API no devolvió torneos"));
+                                }
+                            } else {
+                                String errorBody = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "sin cuerpo";
+                                Log.e(TAG, "Error HTTP " + response.code() + ": " + errorBody);
+                                callback.onFailure(new IOException("Error HTTP: " + response.code()));
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error procesando respuesta", e);
+                            callback.onFailure(new IOException("Error procesando la respuesta"));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Tournament>> call,
+                            @NonNull Throwable t) {
+                        Log.e(TAG, "❌ Error en la petición: " + t.getClass().getSimpleName());
+                        Log.e(TAG, "Mensaje: " + t.getMessage(), t);
+
+                        // Si el error es de JSON vacío, mostrar mensaje específico
+                        if (t.getMessage() != null && t.getMessage().contains("End of input")) {
+                            callback.onFailure(new IOException("La API devolvió una respuesta vacía"));
+                        } else {
+                            callback.onFailure(t);
+                        }
+                    }
+                });
     }
 
     @Override
-    public void getTournamentDetail(long id, TournamentDetailCallback callback) {
-        apiService.getTournamentDetail(id).enqueue(new Callback<Tournament>() {
-            @Override
-            public void onResponse(@NonNull Call<Tournament> call, @NonNull Response<Tournament> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(response.body());
-                } else {
-                    callback.onFailure(new IOException("Error al obtener detalle del torneo: " + response.code()));
+    public void getTournamentDetail(String id, TournamentDetailCallback callback) {
+        if (cachedTournaments != null && !cachedTournaments.isEmpty()) {
+            for (Tournament tournament : cachedTournaments) {
+                if (id.equals(tournament.getId())) {
+                    callback.onResponse(tournament);
+                    return;
                 }
+            }
+        }
+
+        getTournaments(new TournamentsCallback() {
+            @Override
+            public void onResponse(List<Tournament> tournaments) {
+                for (Tournament tournament : tournaments) {
+                    if (id.equals(tournament.getId())) {
+                        callback.onResponse(tournament);
+                        return;
+                    }
+                }
+                callback.onFailure(new IOException("Torneo no encontrado"));
             }
 
             @Override
-            public void onFailure(@NonNull Call<Tournament> call, @NonNull Throwable t) {
+            public void onFailure(Throwable t) {
                 callback.onFailure(t);
             }
         });

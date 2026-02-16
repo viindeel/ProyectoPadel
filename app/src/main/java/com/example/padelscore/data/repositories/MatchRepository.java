@@ -11,6 +11,10 @@ public interface MatchRepository {
         void onFailure(Throwable t);
     }
 
-    void getMatches(long tournamentId, MatchesCallback callback);
+    void getMatches(String tournamentId, MatchesCallback callback);
+
+    void getMatchesByDate(String date, MatchesCallback callback);
+
+    void getFipMatchesByDate(String date, MatchesCallback callback);
 }
 

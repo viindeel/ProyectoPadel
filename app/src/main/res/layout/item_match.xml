@@ -23,23 +23,65 @@
             tools:text="2026-02-15" />
 
         <TextView
-            android:id="@+id/match_estado"
+            android:id="@+id/match_court"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/match_fecha"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/color_sobre_superficie"
+            android:visibility="gone"
+            tools:text="Center Court" />
+
+        <TextView
+            android:id="@+id/match_category_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@id/match_estado"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/color_sobre_superficie"
+            tools:text="Women • Quarterfinals" />
+
+        <TextView
+            android:id="@+id/match_estado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/match_category_round"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_status_chip"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-            android:textColor="@color/color_secundario"
-            tools:text="Finalizado" />
+            android:textColor="@color/color_sobre_primario"
+            tools:text="Programado" />
 
         <TextView
             android:id="@+id/match_jugadores"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/match_fecha"
+            android:layout_below="@id/match_tournament_name"
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="@color/color_sobre_superficie_variante"
             tools:text="Juan Pérez &amp; Pedro López vs Ana García &amp; María Sánchez" />
+
+        <TextView
+            android:id="@+id/match_tournament_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/match_court"
+            android:layout_marginTop="6dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/color_sobre_superficie"
+            android:visibility="gone"
+            tools:text="Riyadh Season P1 2026" />
 
         <TextView
             android:id="@+id/match_resultado"
@@ -47,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/match_jugadores"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textColor="@color/color_sobre_superficie_variante"
             tools:text="6-4, 7-5" />
 

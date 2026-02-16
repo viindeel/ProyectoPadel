@@ -47,6 +47,25 @@
                 android:visibility="gone"
                 android:textAppearance="@style/TextAppearance.App.BodyLarge"/>
 
+            <LinearLayout
+                android:id="@+id/empty_state_container_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/empty_state_text_favorites"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⭐ Aún no tienes favoritos"
+                    android:textAppearance="@style/TextAppearance.App.BodyLarge"
+                    android:textColor="@color/color_sobre_superficie_variante"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favorites_recycler_view"
                 android:layout_width="match_parent"

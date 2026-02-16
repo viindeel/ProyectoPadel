@@ -13,31 +13,72 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.padelscore.R;
 import com.example.padelscore.model.Match;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> {
+public class MatchSectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<Match> matches;
-    public MatchAdapter(List<Match> matches) {
-        this.matches = matches;
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_MATCH = 1;
+
+    private final List<Item> items = new ArrayList<>();
+
+    public MatchSectionAdapter(List<Match> todayMatches,
+                               List<Match> otherMatches,
+                               String todayLabel,
+                               String otherLabel) {
+        if (todayMatches != null && !todayMatches.isEmpty()) {
+            items.add(new Item(todayLabel));
+            for (Match match : todayMatches) {
+                items.add(new Item(match));
+            }
+        }
+        if (otherMatches != null && !otherMatches.isEmpty()) {
+            items.add(new Item(otherLabel));
+            for (Match match : otherMatches) {
+                items.add(new Item(match));
+            }
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).isHeader ? TYPE_HEADER : TYPE_MATCH;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_match, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (viewType == TYPE_HEADER) {
+            View view = inflater.inflate(R.layout.item_match_section, parent, false);
+            return new HeaderViewHolder(view);
+        }
+        View view = inflater.inflate(R.layout.item_match, parent, false);
+        return new MatchViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Match match = matches.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Item item = items.get(position);
+        if (holder instanceof HeaderViewHolder) {
+            ((HeaderViewHolder) holder).title.setText(item.headerText);
+        } else if (holder instanceof MatchViewHolder) {
+            bindMatch((MatchViewHolder) holder, item.match);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    private void bindMatch(MatchViewHolder holder, Match match) {
         holder.fecha.setText(formatTime(match));
         holder.categoryRound.setText(formatCategoryRound(match));
         String rawStatus = match.getEstado() != null ? match.getEstado() : "unknown";
         String rawScore = match.getResultado();
-        String displayStatus = mapStatus(rawStatus, rawScore);
-        holder.estado.setText(displayStatus);
+        holder.estado.setText(mapStatus(rawStatus, rawScore));
         applyStatusStyle(holder.estado, rawStatus, rawScore);
 
         String equipo1 = match.getTeam1() != null ? match.getTeam1() : "Equipo 1";
@@ -48,32 +89,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
 
         bindTournamentName(holder.tournamentName, match.getTournamentName());
         bindCourt(holder.court, match.getCourt());
-    }
-
-    @Override
-    public int getItemCount() {
-        return matches.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView fecha;
-        public final TextView court;
-        public final TextView categoryRound;
-        public final TextView estado;
-        public final TextView tournamentName;
-        public final TextView jugadores;
-        public final TextView resultado;
-
-        public ViewHolder(View view) {
-            super(view);
-            fecha = view.findViewById(R.id.match_fecha);
-            court = view.findViewById(R.id.match_court);
-            categoryRound = view.findViewById(R.id.match_category_round);
-            estado = view.findViewById(R.id.match_estado);
-            tournamentName = view.findViewById(R.id.match_tournament_name);
-            jugadores = view.findViewById(R.id.match_jugadores);
-            resultado = view.findViewById(R.id.match_resultado);
-        }
     }
 
     private String mapStatus(String status, String score) {
@@ -162,6 +177,54 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         return false;
     }
 
+    private static class Item {
+        private final boolean isHeader;
+        private final String headerText;
+        private final Match match;
+
+        private Item(String headerText) {
+            this.isHeader = true;
+            this.headerText = headerText;
+            this.match = null;
+        }
+
+        private Item(Match match) {
+            this.isHeader = false;
+            this.headerText = null;
+            this.match = match;
+        }
+    }
+
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        private final TextView title;
+
+        HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.match_section_title);
+        }
+    }
+
+    static class MatchViewHolder extends RecyclerView.ViewHolder {
+        private final TextView fecha;
+        private final TextView court;
+        private final TextView categoryRound;
+        private final TextView estado;
+        private final TextView tournamentName;
+        private final TextView jugadores;
+        private final TextView resultado;
+
+        MatchViewHolder(@NonNull View itemView) {
+            super(itemView);
+            fecha = itemView.findViewById(R.id.match_fecha);
+            court = itemView.findViewById(R.id.match_court);
+            categoryRound = itemView.findViewById(R.id.match_category_round);
+            estado = itemView.findViewById(R.id.match_estado);
+            tournamentName = itemView.findViewById(R.id.match_tournament_name);
+            jugadores = itemView.findViewById(R.id.match_jugadores);
+            resultado = itemView.findViewById(R.id.match_resultado);
+        }
+    }
+
     private void bindTournamentName(TextView view, String name) {
         if (name == null || name.trim().isEmpty()) {
             view.setVisibility(View.GONE);
@@ -206,6 +269,4 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         }
         return "";
     }
-
 }
-

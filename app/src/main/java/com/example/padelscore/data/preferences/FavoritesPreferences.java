@@ -16,19 +16,19 @@ public class FavoritesPreferences {
         this.prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-    public void saveFavorite(long tournamentId) {
+    public void saveFavorite(String tournamentId) {
         Set<String> favorites = new HashSet<>(prefs.getStringSet(FAVORITES_KEY, new HashSet<>()));
         favorites.add(String.valueOf(tournamentId));
         prefs.edit().putStringSet(FAVORITES_KEY, favorites).apply();
     }
 
-    public void removeFavorite(long tournamentId) {
+    public void removeFavorite(String tournamentId) {
         Set<String> favorites = new HashSet<>(prefs.getStringSet(FAVORITES_KEY, new HashSet<>()));
         favorites.remove(String.valueOf(tournamentId));
         prefs.edit().putStringSet(FAVORITES_KEY, favorites).apply();
     }
 
-    public boolean isFavorite(long tournamentId) {
+    public boolean isFavorite(String tournamentId) {
         Set<String> favorites = prefs.getStringSet(FAVORITES_KEY, new HashSet<>());
         return favorites.contains(String.valueOf(tournamentId));
     }

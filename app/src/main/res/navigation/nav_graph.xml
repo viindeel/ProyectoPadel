@@ -33,4 +33,5 @@
         android:label="Tournament Details"
         tools:layout="@layout/fragment_tournament_detail" />
 
+
 </navigation>

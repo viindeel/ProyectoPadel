@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_fondo"
     tools:context=".ui.tournaments.TournamentDetailFragment">
 
     <RelativeLayout
@@ -43,7 +44,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/color_superficie_variante"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        app:strokeColor="@color/color_contorno"
+        app:strokeWidth="1dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,6 +63,16 @@
                 android:textColor="@color/color_sobre_superficie_variante"
                 android:layout_toStartOf="@+id/favorite_icon"/>
 
+            <TextView
+                android:id="@+id/tournament_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tournament_name"
+                android:layout_marginTop="6dp"
+                tools:text="Madrid, Espana"
+                android:textColor="@color/color_sobre_superficie_variante"
+                android:textAppearance="?attr/textAppearanceBody2"/>
+
             <ImageView
                 android:id="@+id/favorite_icon"
                 android:layout_width="wrap_content"
@@ -74,7 +87,7 @@
                 android:id="@+id/tournament_dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tournament_name"
+                android:layout_below="@id/tournament_location"
                 android:layout_marginTop="8dp"
                 tools:text="Fecha: YYYY-MM-DD a YYYY-MM-DD"
                 android:textColor="@color/color_sobre_superficie_variante"

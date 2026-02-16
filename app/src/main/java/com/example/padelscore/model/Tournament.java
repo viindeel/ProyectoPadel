@@ -5,100 +5,121 @@ import com.google.gson.annotations.SerializedName;
 public class Tournament {
 
     @SerializedName("id")
-    private long id;
+    private String id;
 
     @SerializedName("name")
-    private String nombre;
+    private String name;
 
-    @SerializedName("city")
-    private String ubicacion;
+    @SerializedName(value = "location", alternate = {"city"})
+    private String location;
 
-    @SerializedName("start_date")
-    private String fecha;
+    @SerializedName("country")
+    private String country;
 
-    @SerializedName("end_date")
-    private String fechaFin;
+    @SerializedName(value = "startDate", alternate = {"start_date"})
+    private String startDate;
 
-    @SerializedName("category")
-    private String categoria;
+    @SerializedName(value = "endDate", alternate = {"end_date"})
+    private String endDate;
 
-    @SerializedName("surface")
-    private String superficie;
-
-    @SerializedName("level")
-    private String nivel;
+    @SerializedName("status")
+    private String status;
 
     private boolean isFavorite = false;
 
-    public Tournament(long id, String nombre, String ubicacion, String fecha) {
+    public Tournament(String id, String name, String location, String startDate) {
         this.id = id;
-        this.nombre = nombre;
-        this.ubicacion = ubicacion;
-        this.fecha = fecha;
+        this.name = name;
+        this.location = location;
+        this.startDate = startDate;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public String getNombre() {
-        return nombre;
+        return name;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.name = nombre;
     }
 
     public String getUbicacion() {
-        return ubicacion;
+        return location;
     }
 
     public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
+        this.location = ubicacion;
     }
 
     public String getFecha() {
-        return fecha;
+        return startDate;
     }
 
     public void setFecha(String fecha) {
-        this.fecha = fecha;
+        this.startDate = fecha;
     }
 
     public String getFechaFin() {
-        return fechaFin;
+        return endDate;
     }
 
     public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+        this.endDate = fechaFin;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSuperficie() {
-        return superficie;
+    public String getLocation() {
+        return location;
     }
 
-    public void setSuperficie(String superficie) {
-        this.superficie = superficie;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getNivel() {
-        return nivel;
+    public String getCountry() {
+        return country;
     }
 
-    public void setNivel(String nivel) {
-        this.nivel = nivel;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean isFavorite() {

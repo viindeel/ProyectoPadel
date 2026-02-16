@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_fondo"
     tools:context=".ui.matches.MatchesFragment">
 
     <RelativeLayout
@@ -49,10 +50,35 @@
                 android:visibility="gone"
                 android:textAppearance="@style/TextAppearance.App.BodyLarge"/>
 
+            <LinearLayout
+                android:id="@+id/empty_state_container_matches"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/empty_state_text_matches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏆 Selecciona un torneo"
+                    android:textAppearance="@style/TextAppearance.App.BodyLarge"
+                    android:textColor="@color/color_sobre_superficie_variante"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/matches_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:scrollbarStyle="outsideOverlay" />
 
         </LinearLayout>
 

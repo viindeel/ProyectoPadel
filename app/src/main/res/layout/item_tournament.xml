@@ -26,6 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/color_secundario" />
 
+
         <TextView
             android:id="@+id/tournament_name"
             android:layout_width="0dp"
@@ -49,6 +50,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tournament_name"
             tools:text="WiZink Center" />
+
+        <TextView
+            android:id="@+id/tournament_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/color_sobre_superficie"
+            app:layout_constraintEnd_toEndOf="@+id/tournament_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_location"
+            tools:text="Estado: En directo" />
+
+        <TextView
+            android:id="@+id/tournament_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/color_sobre_superficie_variante"
+            app:layout_constraintEnd_toEndOf="@+id/tournament_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tournament_status"
+            tools:text="Del 2026-02-15 al 2026-02-21" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

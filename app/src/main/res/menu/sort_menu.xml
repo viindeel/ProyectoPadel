@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sort_by_date"
+        android:title="Más próximos primero (Fecha)"
+        app:titleTextAppearance="@style/MenuItemTextStyle" />
+    <item
+        android:id="@+id/sort_by_name"
+        android:title="Por nombre (A-Z)"
+        app:titleTextAppearance="@style/MenuItemTextStyle" />
+    <item
+        android:id="@+id/sort_by_favorites"
+        android:title="Favoritos primero"
+        app:titleTextAppearance="@style/MenuItemTextStyle" />
+</menu>
+

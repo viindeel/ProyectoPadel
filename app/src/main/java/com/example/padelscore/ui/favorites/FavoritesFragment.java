@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,8 @@ public class FavoritesFragment extends Fragment {
     private FavoritesAdapter adapter;
     private List<Tournament> favoriteTournaments = new ArrayList<>();
     private FavoritesPreferences favoritesPreferences;
+    private LinearLayout emptyStateContainer;
+    private TextView emptyStateText;
 
     @Nullable
     @Override
@@ -50,6 +53,8 @@ public class FavoritesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.favorites_recycler_view);
         loadingProgress = view.findViewById(R.id.loading_progress_favorites);
         errorMessage = view.findViewById(R.id.error_message_favorites);
+        emptyStateContainer = view.findViewById(R.id.empty_state_container_favorites);
+        emptyStateText = view.findViewById(R.id.empty_state_text_favorites);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new FavoritesAdapter(favoriteTournaments);
@@ -69,6 +74,7 @@ public class FavoritesFragment extends Fragment {
                 }
             }
             adapter.notifyDataSetChanged();
+            updateEmptyState();
         });
 
         viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
@@ -88,5 +94,16 @@ public class FavoritesFragment extends Fragment {
             viewModel.refreshTournaments();
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private void updateEmptyState() {
+        if (favoriteTournaments.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyStateContainer.setVisibility(View.VISIBLE);
+            emptyStateText.setText("⭐ Aún no tienes favoritos\n\nAñade torneos para verlos aquí");
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyStateContainer.setVisibility(View.GONE);
+        }
     }
 }

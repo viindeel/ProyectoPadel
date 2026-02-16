@@ -17,5 +17,5 @@ public interface TournamentRepository {
     }
 
     void getTournaments(TournamentsCallback callback);
-    void getTournamentDetail(long id, TournamentDetailCallback callback);
+    void getTournamentDetail(String id, TournamentDetailCallback callback);
 }

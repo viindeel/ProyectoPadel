@@ -36,6 +36,21 @@ public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.Vi
         Tournament tournament = tournaments.get(position);
         holder.name.setText(tournament.getNombre());
         holder.location.setText(tournament.getUbicacion());
+        String fechaInicio = tournament.getFecha() != null ? tournament.getFecha() : "";
+        String fechaFin = tournament.getFechaFin() != null ? tournament.getFechaFin() : "";
+        String fecha;
+        if (!fechaInicio.isEmpty() && !fechaFin.isEmpty()) {
+            fecha = "Del " + fechaInicio + " al " + fechaFin;
+        } else if (!fechaInicio.isEmpty()) {
+            fecha = fechaInicio;
+        } else if (!fechaFin.isEmpty()) {
+            fecha = "Hasta " + fechaFin;
+        } else {
+            fecha = "Fecha por confirmar";
+        }
+        holder.date.setText(fecha);
+        holder.status.setText("Estado: " + mapStatus(tournament.getStatus()));
+
 
         holder.itemView.setOnClickListener(v -> {
             viewModel.select(tournament);
@@ -52,11 +67,48 @@ public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView name;
         public final TextView location;
+        public final TextView status;
+        public final TextView date;
 
         public ViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.tournament_name);
             location = view.findViewById(R.id.tournament_location);
+            status = view.findViewById(R.id.tournament_status);
+            date = view.findViewById(R.id.tournament_date);
         }
     }
+
+    private String mapStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            return "Sin estado";
+        }
+        String normalized = status.trim().toLowerCase();
+        switch (normalized) {
+            case "live":
+            case "playing":
+            case "en vivo":
+            case "en_directo":
+            case "en directo":
+                return "En directo";
+            case "finished":
+            case "completed":
+            case "finalizado":
+                return "Finalizado";
+            case "scheduled":
+            case "upcoming":
+            case "programado":
+                return "Programado";
+            case "postponed":
+            case "pospuesto":
+                return "Pospuesto";
+            case "cancelled":
+            case "canceled":
+            case "cancelado":
+                return "Cancelado";
+            default:
+                return status;
+        }
+    }
+
 }

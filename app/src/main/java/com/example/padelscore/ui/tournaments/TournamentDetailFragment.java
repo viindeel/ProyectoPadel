@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class TournamentDetailFragment extends Fragment {
 
     private TournamentViewModel viewModel;
     private TextView tournamentName;
+    private TextView tournamentLocation;
     private TextView tournamentDates;
     private TextView tournamentDetails;
     private ImageView favoriteIcon;
@@ -43,6 +45,7 @@ public class TournamentDetailFragment extends Fragment {
         favoritesPreferences = new FavoritesPreferences(requireContext());
 
         tournamentName = view.findViewById(R.id.tournament_name);
+        tournamentLocation = view.findViewById(R.id.tournament_location);
         tournamentDates = view.findViewById(R.id.tournament_dates);
         tournamentDetails = view.findViewById(R.id.tournament_details);
         favoriteIcon = view.findViewById(R.id.favorite_icon);
@@ -95,6 +98,17 @@ public class TournamentDetailFragment extends Fragment {
 
     private void displayTournamentDetail(Tournament tournament) {
         tournamentName.setText(tournament.getNombre() != null ? tournament.getNombre() : "");
+        String location = tournament.getUbicacion() != null ? tournament.getUbicacion() : "";
+        String country = tournament.getCountry() != null ? tournament.getCountry() : "";
+        if (!location.isEmpty() && !country.isEmpty()) {
+            tournamentLocation.setText(location + ", " + country);
+        } else if (!location.isEmpty()) {
+            tournamentLocation.setText(location);
+        } else if (!country.isEmpty()) {
+            tournamentLocation.setText(country);
+        } else {
+            tournamentLocation.setText("Ubicacion por confirmar");
+        }
         String dateRange = "Fecha: " + (tournament.getFecha() != null ? tournament.getFecha() : "N/A");
         if (tournament.getFechaFin() != null && !tournament.getFechaFin().isEmpty()) {
             dateRange += " a " + tournament.getFechaFin();
@@ -102,16 +116,12 @@ public class TournamentDetailFragment extends Fragment {
         tournamentDates.setText(dateRange);
 
         StringBuilder details = new StringBuilder();
-        if (tournament.getNivel() != null && !tournament.getNivel().isEmpty()) {
-            details.append("Nivel: ").append(tournament.getNivel());
+        if (tournament.getCountry() != null && !tournament.getCountry().isEmpty()) {
+            details.append("Pais: ").append(tournament.getCountry());
         }
-        if (tournament.getSuperficie() != null && !tournament.getSuperficie().isEmpty()) {
+        if (tournament.getStatus() != null && !tournament.getStatus().isEmpty()) {
             if (details.length() > 0) details.append("\n");
-            details.append("Superficie: ").append(tournament.getSuperficie());
-        }
-        if (tournament.getCategoria() != null && !tournament.getCategoria().isEmpty()) {
-            if (details.length() > 0) details.append("\n");
-            details.append("Categoría: ").append(tournament.getCategoria());
+            details.append("Estado: ").append(tournament.getStatus());
         }
         if (details.length() == 0) {
             details.append("Sin detalles disponibles");
@@ -119,11 +129,15 @@ public class TournamentDetailFragment extends Fragment {
         tournamentDetails.setText(details.toString());
     }
 
+
     private void updateFavoriteIcon(Tournament tournament) {
         if (tournament.isFavorite()) {
             favoriteIcon.setImageResource(R.drawable.ic_star);
         } else {
             favoriteIcon.setImageResource(R.drawable.ic_star_outline);
         }
+
+        // Animar el icono con bounce scale
+        favoriteIcon.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.bounce_scale));
     }
 }

@@ -167,7 +167,7 @@ public class TournamentListFragment extends Fragment {
             try {
                 return LocalDate.parse(value, formatter);
             } catch (DateTimeParseException ignored) {
-                // Try next format
+                // Intentamos el siguiente formato
             }
         }
 
@@ -175,7 +175,7 @@ public class TournamentListFragment extends Fragment {
             Instant instant = Instant.parse(value);
             return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).toLocalDate();
         } catch (DateTimeParseException ignored) {
-            // Try other datetime formats
+            // Intentamos el siguiente formato de fecha-hora
         }
 
         List<DateTimeFormatter> dateTimeFormats = Arrays.asList(
@@ -188,7 +188,7 @@ public class TournamentListFragment extends Fragment {
             try {
                 return LocalDateTime.parse(value, formatter).toLocalDate();
             } catch (DateTimeParseException ignored) {
-                // Try next format
+                // Intentamos el siguiente formato
             }
         }
 
@@ -199,7 +199,7 @@ public class TournamentListFragment extends Fragment {
         if (currentTournaments.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyStateContainer.setVisibility(View.VISIBLE);
-            emptyStateText.setText("⚽ No hay torneos aún\n\nDesliza hacia abajo para refrescar");
+            emptyStateText.setText("No hay torneos aún. Desliza hacia abajo para refrescar");
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             emptyStateContainer.setVisibility(View.GONE);

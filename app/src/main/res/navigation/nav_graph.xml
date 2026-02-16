@@ -32,6 +32,4 @@
         android:name="com.example.padelscore.ui.tournaments.TournamentDetailFragment"
         android:label="Tournament Details"
         tools:layout="@layout/fragment_tournament_detail" />
-
-
 </navigation>

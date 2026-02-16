@@ -62,7 +62,7 @@
                     android:id="@+id/empty_state_text_matches"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🏆 Selecciona un torneo"
+                    android:text="Selecciona un torneo"
                     android:textAppearance="@style/TextAppearance.App.BodyLarge"
                     android:textColor="@color/color_sobre_superficie_variante"
                     android:gravity="center"

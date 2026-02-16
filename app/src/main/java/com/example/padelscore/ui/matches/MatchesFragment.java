@@ -191,8 +191,8 @@ public class MatchesFragment extends Fragment {
                 }
                 return sdf.parse(value);
             } catch (java.text.ParseException ignored) {
-                // Try next format
-            }
+                //Intentar siguiente formato
+                }
         }
         return null;
     }
@@ -225,9 +225,9 @@ public class MatchesFragment extends Fragment {
             emptyStateContainer.setVisibility(View.VISIBLE);
 
             if (viewModel.getSelected().getValue() == null) {
-                emptyStateText.setText("⚽ No hay partidos hoy\n\nSe actualizan cada 30 segundos");
+                emptyStateText.setText("No hay partidos hoy. Se actualizan cada 30 segundos");
             } else {
-                emptyStateText.setText("⚽ No hay partidos hoy\n\nLos partidos se actualizan cada 30 segundos");
+                emptyStateText.setText("No hay partidos hoy. Los partidos se actualizan cada 30 segundos");
             }
         }
     }

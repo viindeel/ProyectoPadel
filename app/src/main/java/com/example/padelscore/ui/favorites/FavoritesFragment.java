@@ -100,7 +100,7 @@ public class FavoritesFragment extends Fragment {
         if (favoriteTournaments.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyStateContainer.setVisibility(View.VISIBLE);
-            emptyStateText.setText("⭐ Aún no tienes favoritos\n\nAñade torneos para verlos aquí");
+            emptyStateText.setText("Aún no tienes favoritos, Añade torneos para verlos aquí");
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             emptyStateContainer.setVisibility(View.GONE);

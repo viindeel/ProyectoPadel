@@ -12,16 +12,14 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
+        android:layout_above="@+id/custom_bottom_navigation"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <com.example.padelscore.ui.custom.CustomBottomNavigationView
+        android:id="@+id/custom_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/verde_encabezado_pie"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -6,4 +6,6 @@
     <string name="tournaments">Torneos</string>
     <string name="favorites">Favoritos</string>
     <string name="matches">Partidos</string>
+    <string name="tab">Tab</string>
+    <string name="tab_icon_desc">Icono de pestaña</string>
 </resources>

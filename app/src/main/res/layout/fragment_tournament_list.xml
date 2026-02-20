@@ -9,33 +9,39 @@
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/verde_encabezado_pie"
+        android:layout_height="72dp"
+        android:paddingTop="@dimen/status_bar_height"
+        android:paddingBottom="8dp"
         android:layout_alignParentTop="true">
 
         <TextView
+            android:id="@+id/header_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:layout_height="40dp"
+            android:text="Torneos"
             android:textAppearance="@style/TextAppearance.App.TitleLarge"
-            android:textColor="@color/color_sobre_primario"
-            android:layout_centerInParent="true"/>
+            android:textColor="@color/color_primario"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_glass_pill"
+            android:gravity="center"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
 
         <ImageView
             android:id="@+id/sort_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_sort"
             android:contentDescription="Ordenar torneos"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:scaleType="center"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="@color/color_sobre_primario"
-            xmlns:app="http://schemas.android.com/apk/res-auto" />
-
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_glass_pill"
+            android:padding="8dp"
+            app:tint="@color/color_primario" />
     </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -77,7 +83,7 @@
                     android:id="@+id/empty_state_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No hay torneos aún"
+                    android:text="No hay torneos aún. Desliza hacia abajo para refrescar"
                     android:textAppearance="@style/TextAppearance.App.BodyLarge"
                     android:textColor="@color/color_sobre_superficie_variante"
                     android:gravity="center"
@@ -90,10 +96,12 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingTop="8dp"
-                android:paddingBottom="16dp"/>
+                android:paddingBottom="16dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:scrollbarStyle="outsideOverlay" />
 
         </LinearLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </LinearLayout>

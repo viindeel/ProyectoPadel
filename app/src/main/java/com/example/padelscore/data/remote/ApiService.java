@@ -12,14 +12,14 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-        @GET("tournaments")
+        @GET("api/tournaments/")
         Call<List<Tournament>> getTournaments(
             @Query("year") int year,
             @Query("after_date") String afterDate,
             @Query("before_date") String beforeDate
         );
 
-    @GET("tournaments/{id}/matches")
+    @GET("api/tournaments/{id}/matches")
     Call<List<Match>> getMatches(@Path("id") String id);
 
     @GET("matches")

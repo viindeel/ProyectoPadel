@@ -6,22 +6,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.padelscore.R;
-import com.example.padelscore.model.Tournament;
+import com.example.padelscore.model.Torneo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.ViewHolder> {
 
-    private final List<Tournament> tournaments;
-    private final TournamentViewModel viewModel;
+    private List<Torneo> torneos;
 
-    public TournamentAdapter(List<Tournament> tournaments, TournamentViewModel viewModel) {
-        this.tournaments = tournaments;
-        this.viewModel = viewModel;
+    public TournamentAdapter() {
+        this.torneos = new ArrayList<>();
+    }
+
+    public void setTorneos(List<Torneo> torneos) {
+        this.torneos = torneos;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -33,11 +36,11 @@ public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Tournament tournament = tournaments.get(position);
-        holder.name.setText(tournament.getNombre());
-        holder.location.setText(tournament.getUbicacion());
-        String fechaInicio = tournament.getFecha() != null ? tournament.getFecha() : "";
-        String fechaFin = tournament.getFechaFin() != null ? tournament.getFechaFin() : "";
+        Torneo torneo = torneos.get(position);
+        holder.name.setText(torneo.nombre);
+        holder.location.setText(torneo.ubicacion);
+        String fechaInicio = torneo.fecha_inicio != null ? torneo.fecha_inicio : "";
+        String fechaFin = torneo.fecha_fin != null ? torneo.fecha_fin : "";
         String fecha;
         if (!fechaInicio.isEmpty() && !fechaFin.isEmpty()) {
             fecha = "Del " + fechaInicio + " al " + fechaFin;
@@ -49,19 +52,18 @@ public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.Vi
             fecha = "Fecha por confirmar";
         }
         holder.date.setText(fecha);
-        holder.status.setText("Estado: " + mapStatus(tournament.getStatus()));
+        holder.status.setText("Estado: " + mapStatus(torneo.status));
 
 
         holder.itemView.setOnClickListener(v -> {
-            viewModel.select(tournament);
-            viewModel.loadTournamentDetail(tournament.getId());
-            Navigation.findNavController(v).navigate(R.id.action_tournamentListFragment_to_tournamentDetailFragment);
+            // TODO: Implementar navegación a detalle de torneo si es necesario
+            // Por ahora, solo mostramos un Toast o dejamos vacío
         });
     }
 
     @Override
     public int getItemCount() {
-        return tournaments.size();
+        return torneos.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

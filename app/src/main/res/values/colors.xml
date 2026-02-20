@@ -18,4 +18,6 @@
     <color name="status_scheduled">#6D4C41</color>
     <color name="status_postponed">#F9A825</color>
     <color name="status_cancelled">#C62828</color>
+    <color name="colorOnSurface">#EAEFEA</color>
+    <color name="white">#FFFFFF</color>
 </resources>

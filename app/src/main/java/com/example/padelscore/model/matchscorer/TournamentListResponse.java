@@ -3,23 +3,7 @@ package com.example.padelscore.model.matchscorer;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/**
- * POJO para la respuesta de GET api/tournaments.
- *
- * Estructura de la respuesta JSON (ejemplo):
- * {
- * "tournaments": [
- * {
- * "id": 12345,
- * "name": "Torneo Madrid P1",
- * "city": "Madrid",
- * "startDate": "2026-02-15",
- * "endDate": "2026-02-21",
- * ...
- * }
- * ]
- * }
- */
+// Respuesta del GET api/tournaments
 public class TournamentListResponse {
 
     @SerializedName("tournaments")
@@ -28,8 +12,8 @@ public class TournamentListResponse {
     @SerializedName("data")
     private List<TournamentItem> data;
 
+    // Algunas APIs usan "data", otras "tournaments"
     public List<TournamentItem> getTournaments() {
-        // Algunas APIs usan "data", otras "tournaments"
         return tournaments != null ? tournaments : data;
     }
 
@@ -37,9 +21,7 @@ public class TournamentListResponse {
         this.tournaments = tournaments;
     }
 
-    /**
-     * Clase interna que representa un torneo individual en la lista.
-     */
+    // Torneo individual
     public static class TournamentItem {
 
         @SerializedName(value = "id", alternate = { "_id" })
@@ -78,102 +60,29 @@ public class TournamentListResponse {
         @SerializedName("discipline")
         private String discipline;
 
-        // Getters y Setters
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public String getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(String startDate) {
-            this.startDate = startDate;
-        }
-
-        public String getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(String endDate) {
-            this.endDate = endDate;
-        }
-
-        public String getDates() {
-            return dates;
-        }
-
-        public void setDates(String dates) {
-            this.dates = dates;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public void setCategory(String category) {
-            this.category = category;
-        }
-
-        public String getSurface() {
-            return surface;
-        }
-
-        public void setSurface(String surface) {
-            this.surface = surface;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
-
-        public String getSport() {
-            return sport;
-        }
-
-        public void setSport(String sport) {
-            this.sport = sport;
-        }
-
-        public String getDiscipline() {
-            return discipline;
-        }
-
-        public void setDiscipline(String discipline) {
-            this.discipline = discipline;
-        }
+        public String getId() { return id; }
+        public void setId(String id) { this.id = id; }
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public String getCity() { return city; }
+        public void setCity(String city) { this.city = city; }
+        public String getCountry() { return country; }
+        public void setCountry(String country) { this.country = country; }
+        public String getStartDate() { return startDate; }
+        public void setStartDate(String startDate) { this.startDate = startDate; }
+        public String getEndDate() { return endDate; }
+        public void setEndDate(String endDate) { this.endDate = endDate; }
+        public String getDates() { return dates; }
+        public void setDates(String dates) { this.dates = dates; }
+        public String getCategory() { return category; }
+        public void setCategory(String category) { this.category = category; }
+        public String getSurface() { return surface; }
+        public void setSurface(String surface) { this.surface = surface; }
+        public String getGender() { return gender; }
+        public void setGender(String gender) { this.gender = gender; }
+        public String getSport() { return sport; }
+        public void setSport(String sport) { this.sport = sport; }
+        public String getDiscipline() { return discipline; }
+        public void setDiscipline(String discipline) { this.discipline = discipline; }
     }
 }

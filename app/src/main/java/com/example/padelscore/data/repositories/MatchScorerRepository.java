@@ -13,37 +13,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * EJEMPLO de Repository usando el backend Django.
- */
+// Repository para torneos y partidos via API
 public class MatchScorerRepository {
 
-     private final ApiService apiService;
-     private static final int DEFAULT_YEAR = 2026;
+    private final ApiService apiService;
+    private static final int DEFAULT_YEAR = 2026;
 
     public MatchScorerRepository() {
-        // Obtener la instancia única de RetrofitClient
         this.apiService = RetrofitClient.getInstance().getApiService();
     }
 
-    /**
-    * Obtiene torneos del año 2026.
-     *
-     * Ejemplo de uso en ViewModel:
-     * <code>
-     * repository.getTournaments(new TournamentsCallback() {
-     *     &#64;Override
-    *     public void onResponse(List<Tournament> tournaments) {
-    *         // Actualizar LiveData
-     *     }
-     *
-     *     @Override
-     *     public void onFailure(Throwable t) {
-     *         // Mostrar error
-     *     }
-     * });
-     * </code>
-     */
+    // Torneos del año 2026
     public void getTournaments(TournamentsCallback callback) {
         String afterDate = DEFAULT_YEAR + "-01-01";
         String beforeDate = DEFAULT_YEAR + "-12-31";
@@ -51,11 +31,10 @@ public class MatchScorerRepository {
                 .enqueue(new Callback<List<Tournament>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Tournament>> call,
-                            @NonNull Response<List<Tournament>> response) {
+                                           @NonNull Response<List<Tournament>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             List<Tournament> tournaments = response.body();
-
-                            if (tournaments != null && !tournaments.isEmpty()) {
+                            if (!tournaments.isEmpty()) {
                                 callback.onResponse(tournaments);
                             } else {
                                 callback.onFailure(new Exception("No se encontraron torneos"));
@@ -67,47 +46,21 @@ public class MatchScorerRepository {
 
                     @Override
                     public void onFailure(@NonNull Call<List<Tournament>> call,
-                            @NonNull Throwable t) {
+                                          @NonNull Throwable t) {
                         callback.onFailure(t);
                     }
                 });
     }
 
-    /**
-     * Obtiene los partidos de un torneo específico.
-     *
-     * IMPORTANTE: El tournamentId se pasa dinámicamente en la URL.
-     *
-     * Ejemplo de uso en ViewModel:
-     * <code>
-     * long tournamentId = tournament.getId();
-     * repository.getMatchesForTournament(tournamentId, new MatchesCallback() {
-     *     &#64;Override
-    *     public void onResponse(List<Match> matches) {
-    *         // Actualizar LiveData
-     *     }
-     *
-     *     @Override
-     *     public void onFailure(Throwable t) {
-     *         // Mostrar error
-     *     }
-     * });
-     * </code>
-     */
+    // Partidos de un torneo por su ID
     public void getMatchesForTournament(String tournamentId, MatchesCallback callback) {
         apiService.getMatches(tournamentId)
                 .enqueue(new Callback<List<Match>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Match>> call,
-                            @NonNull Response<List<Match>> response) {
+                                           @NonNull Response<List<Match>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            List<Match> matches = response.body();
-
-                            if (matches != null) {
-                                callback.onResponse(matches);
-                            } else {
-                                callback.onFailure(new Exception("No se encontraron partidos"));
-                            }
+                            callback.onResponse(response.body());
                         } else {
                             callback.onFailure(new Exception("Error en la respuesta: " + response.code()));
                         }
@@ -120,22 +73,13 @@ public class MatchScorerRepository {
                 });
     }
 
-    /**
-     * Callback para la lista de torneos.
-     */
     public interface TournamentsCallback {
         void onResponse(List<Tournament> tournaments);
-
         void onFailure(Throwable t);
     }
 
-    /**
-     * Callback para la lista de partidos.
-     */
     public interface MatchesCallback {
         void onResponse(List<Match> matches);
-
         void onFailure(Throwable t);
     }
-
 }

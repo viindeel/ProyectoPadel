@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/matchesFragment">
+    app:startDestination="@id/tournamentListFragment">
+
 
     <fragment
         android:id="@+id/tournamentListFragment"
         android:name="com.example.padelscore.ui.tournaments.TournamentListFragment"
-        android:label="Tournaments"
+        android:label="Torneos"
         tools:layout="@layout/fragment_tournament_list" >
         <action
             android:id="@+id/action_tournamentListFragment_to_tournamentDetailFragment"
@@ -18,18 +19,24 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.padelscore.ui.favorites.FavoritesFragment"
-        android:label="Favorites"
+        android:label="Favoritos"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/matchesFragment"
         android:name="com.example.padelscore.ui.matches.MatchesFragment"
-        android:label="Matches"
+        android:label="Partidos"
         tools:layout="@layout/fragment_matches" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.padelscore.ui.profile.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/tournamentDetailFragment"
         android:name="com.example.padelscore.ui.tournaments.TournamentDetailFragment"
-        android:label="Tournament Details"
+        android:label="Detalle Torneo"
         tools:layout="@layout/fragment_tournament_detail" />
 </navigation>

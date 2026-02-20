@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_ordenar_fecha"
+        android:title="Fecha (más próximos primero)" />
+    <item
+        android:id="@+id/menu_ordenar_nombre"
+        android:title="Nombre (A-Z)" />
+    <item
+        android:id="@+id/menu_ordenar_favoritos"
+        android:title="Favoritos primero" />
+</menu>
+
